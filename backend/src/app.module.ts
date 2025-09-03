@@ -6,13 +6,14 @@ import databaseConfig from "./common/config/database.config";
 import redisConfig from "./common/config/redis.config";
 import {UsersModule} from "./modules/users/users.module";
 import {WeatherModule} from "./modules/weather/weather.module";
+import {RedisModule} from "./modules/redis/redis.module";
 
 @Module({
 	imports: [
 		ConfigModule.forRoot({
 			isGlobal: true,
 			load: [databaseConfig, redisConfig]
-		}), UsersModule, WeatherModule
+		}), UsersModule, WeatherModule, RedisModule
 	],
 	controllers: [AppController],
 	providers: [AppService],

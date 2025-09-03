@@ -1,11 +1,10 @@
-import {RedisOptions, Transport} from "@nestjs/microservices";
+import {redisStore} from "cache-manager-redis-store";
 
-export default (): {redis: RedisOptions} => ({
+export default () => ({
 	redis: {
-		transport: Transport.REDIS,
-		options: {
-			host: process.env.REDIS_HOST,
-			port: process.env.REDIS_PORT ? +process.env.REDIS_PORT : 6379,
-		}
+		ttl: process.env.REDIS_TTL ? +process.env.REDIS_TTL : 60,
+		store: redisStore,
+		host: process.env.REDIS_HOST,
+		port: process.env.REDIS_PORT ? +process.env.REDIS_PORT : 6379,
 	}
 })
