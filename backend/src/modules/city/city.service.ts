@@ -1,7 +1,6 @@
 import {Inject, NotFoundException} from "@nestjs/common";
 import {CityModel} from "./entities/city.entity";
 import {RedisService} from "../redis/redis.service";
-import {NotFoundError} from "rxjs";
 import {CityDto} from "./dtos/city.dto";
 import {CreateCityDto} from "./dtos/create-city.dto";
 
@@ -20,7 +19,7 @@ export class CityService {
 
 				if(!cityFromDatabase) throw new NotFoundException();
 				const cityDto = new CityDto(cityFromDatabase);
-				await this.redisService.set<CityDto>(cityDto.id, cityDto);
+				await this.redisService.set<CityDto>(`${cityDto.id}`, cityDto);
 				return cityDto;
 			}
 
@@ -28,10 +27,23 @@ export class CityService {
 	}
 
 	async getCityList() {
-		return await this.cityRepository.findAll();
+		return (await this.cityRepository.findAll()).map(city => new CityDto(city));
 	}
 
-	async createCity(cityDto: CreateCityDto): Promise<void> {
-		// const wasCreateNewCity = await this.cityRepository.create();
+	async createCity(cityDto: CreateCityDto): Promise<CityDto> {
+		const newCity = await this.cityRepository.create(cityDto);
+		const newCityDto = new CityDto(newCity);
+			await this.redisService.set<CityDto>(`${newCityDto.id}`, newCityDto);
+		return newCityDto;
+	}
+
+	async removeCity(cityId: string) {
+
+
+		await this.cityRepository.destroy({
+			where: {
+				cityId: cityId
+			}
+		})
 	}
 }

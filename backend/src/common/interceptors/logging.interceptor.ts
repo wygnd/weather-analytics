@@ -10,6 +10,8 @@ export class LoggingInterceptor implements NestInterceptor {
 		const method = request.method;
 		const url = request.originalUrl;
 
+		// todo: Fix interceptor
+		// Issue: whe server return 502code console get string: "201 | [POST] request to /city - 2ms" not good
 		return next.handle().pipe(
 			tap(() => {
 				const response = context.switchToHttp().getResponse();

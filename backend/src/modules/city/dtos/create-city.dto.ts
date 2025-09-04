@@ -1,7 +1,7 @@
-import {IsNotEmpty, IsString} from "class-validator";
-import {IsFloat} from "sequelize-typescript";
+import {IsDecimal, IsNotEmpty, IsString} from "class-validator";
+import {CityCreationAttributes} from "../interfaces/city.interface";
 
-export class CreateCityDto {
+export class CreateCityDto implements CityCreationAttributes {
 	@IsNotEmpty({ message: "Invalid name field" })
 	@IsString()
 	name: string;
@@ -11,10 +11,10 @@ export class CreateCityDto {
 	country: string;
 
 	@IsNotEmpty({message: "Invalid lat field"})
-	@IsFloat
+	@IsDecimal({force_decimal: true, decimal_digits: '2'})
 	lat: number;
 
 	@IsNotEmpty({message: "Invalid lat field"})
-	@IsFloat
+	@IsDecimal({force_decimal: true, decimal_digits: '2'})
 	lon: number;
 }

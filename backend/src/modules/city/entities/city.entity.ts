@@ -1,11 +1,11 @@
 import {AutoIncrement, Column, DataType, Model, PrimaryKey, Table} from "sequelize-typescript";
+import {CityAttributes, CityCreationAttributes} from "../interfaces/city.interface";
 
 @Table({tableName: "city"})
-export class CityModel extends Model<CityModel> {
+export class CityModel extends Model<CityAttributes, CityCreationAttributes> {
 	@PrimaryKey
-	@AutoIncrement
-	@Column({type: DataType.STRING})
-	cityId: string;
+	@Column({type: DataType.INTEGER, autoIncrement: true})
+	cityId: number;
 
 	@Column({type: DataType.STRING})
 	name: string;
