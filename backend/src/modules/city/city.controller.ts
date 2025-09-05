@@ -8,7 +8,7 @@ export class CityController {
 	constructor(private readonly cityService: CityService) {}
 
 
-	@Get("/id")
+	@Get("/:id")
 	async getCity(@Param() params: GetCityByIdDto) {
 		try {
 			return await this.cityService.getCityById(params.id);

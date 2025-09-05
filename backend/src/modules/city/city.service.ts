@@ -16,13 +16,13 @@ export class CityService {
 
 			if(!cityFromCache) {
 				const cityFromDatabase = await this.cityRepository.findByPk(cityId);
-
 				if(!cityFromDatabase) throw new NotFoundException();
 				const cityDto = new CityDto(cityFromDatabase);
 				await this.redisService.set<CityDto>(`${cityDto.id}`, cityDto);
 				return cityDto;
 			}
 
+			console.log("Get city from cache", cityFromCache);
 			return cityFromCache;
 	}
 
@@ -33,12 +33,12 @@ export class CityService {
 	async createCity(cityDto: CreateCityDto): Promise<CityDto> {
 		const newCity = await this.cityRepository.create(cityDto);
 		const newCityDto = new CityDto(newCity);
-			await this.redisService.set<CityDto>(`${newCityDto.id}`, newCityDto);
+		await this.redisService.set<CityDto>(`${newCityDto.id}`, newCityDto);
 		return newCityDto;
 	}
 
 	async removeCity(cityId: string) {
-
+		await this.redisService.del(cityId);
 
 		await this.cityRepository.destroy({
 			where: {

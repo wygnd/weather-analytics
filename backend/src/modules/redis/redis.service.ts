@@ -14,7 +14,7 @@ export class RedisService {
 
 	async set<T>(key: string, value: T): Promise<void> {
 		try {
-			await this.cacheManager.set(`${this.redisKeyHead}::${key}`, value);
+			await this.cacheManager.set(`${this.redisKeyHead}::${key}`, value, 0);
 		} catch (error) {
 			throw new InternalServerErrorException(error);
 		}
@@ -22,8 +22,7 @@ export class RedisService {
 
 	async get<T>(key: string): Promise<T | undefined> {
 		try {
-			const jsonResult = await this.cacheManager.get<string>(`${this.redisKeyHead}::${key}`);
-			return jsonResult ? JSON.parse(jsonResult) : undefined;
+			return await this.cacheManager.get<T | undefined>(`${this.redisKeyHead}::${key}`);
 		} catch (error) {
 			throw new InternalServerErrorException(error);
 		}

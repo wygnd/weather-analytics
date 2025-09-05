@@ -1,4 +1,4 @@
-import {IsDecimal, IsNotEmpty, IsString} from "class-validator";
+import {IsDecimal, IsNotEmpty, IsNumber, IsString} from "class-validator";
 import {CityCreationAttributes} from "../interfaces/city.interface";
 
 export class CreateCityDto implements CityCreationAttributes {
@@ -11,10 +11,10 @@ export class CreateCityDto implements CityCreationAttributes {
 	country: string;
 
 	@IsNotEmpty({message: "Invalid lat field"})
-	@IsDecimal({force_decimal: true, decimal_digits: '2'})
+	@IsNumber()
 	lat: number;
 
 	@IsNotEmpty({message: "Invalid lat field"})
-	@IsDecimal({force_decimal: true, decimal_digits: '2'})
+	@IsNumber()
 	lon: number;
 }
